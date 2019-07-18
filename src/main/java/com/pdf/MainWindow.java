@@ -20,6 +20,16 @@ import java.security.cert.Certificate;
 /**
  * 生成密钥的方法
  * keytool -genkey -v -keystore test.p12 -storetype pkcs12 -alias Myapp -keyalg RSA -keysize 2048 -validity 10000
+ *
+ * 应用到正式的项目中导入进去了6个jar包才可以了
+ * bcpkix-jdk15on-1.49.jar
+ * bcprov-jdk15on-1.49.jar
+ * itextpdf-5.5.9.jar
+ * itext-pdfa-5.5.9.jar
+ * itext-xtra-5.5.9.jar
+ * xmlworker-5.5.9.jar
+ *
+ *
  */
 public class MainWindow {
 
