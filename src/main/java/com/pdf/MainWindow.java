@@ -37,6 +37,7 @@ public class MainWindow {
     public static final char[] PASSWORD = "123456".toCharArray();//keystory密码
     public static final String SRC = "E:\\my\\aa\\gg.pdf";
     public static final String DEST = "E:\\my\\aa\\dest.pdf";
+    public String imagePath = "e:\\my\\aa\\gz1.png";
 
     public void sign(String src  //需要签章的pdf文件路径
             , String dest  // 签完章的pdf文件路径
@@ -46,7 +47,8 @@ public class MainWindow {
             , String provider  // 密钥算法提供者，可以为null
             , MakeSignature.CryptoStandard subfilter //数字签名格式，itext有2种
             , String reason  //签名的原因，显示在pdf签名属性中，随便填
-            , String location) //签名的地点，显示在pdf签名属性中，随便填
+            , String location //签名的地点，显示在pdf签名属性中，随便填
+            , int pageNo) //在第几页签名
             throws GeneralSecurityException, IOException, DocumentException {
         //下边的步骤都是固定的，照着写就行了，没啥要解释的
         // Creating the reader and the stamper，开始pdfreader
@@ -66,11 +68,11 @@ public class MainWindow {
         //签名的位置，是图章相对于pdf页面的位置坐标，原点为pdf页面左下角
         //四个参数的分别是，图章左下角x，图章左下角y，图章右上角x，图章右上角y
         //读取图章图片，这个image是itext包的image
-        Image image = Image.getInstance("E:\\my\\aa\\gz.png");
+        Image image = Image.getInstance(imagePath);
 //        float width = image.getWidth();
 //        float height = image.getHeight();
 //        appearance.setVisibleSignature(new Rectangle(400, 400, 400+width, 400+height), 1, "sig1");
-        appearance.setVisibleSignature(new Rectangle(200, 200, 300, 300), 1, "sig1");
+        appearance.setVisibleSignature(new Rectangle(200, 200, 300, 300), pageNo, "sig1");
         appearance.setSignatureGraphic(image);
         appearance.setCertificationLevel(PdfSignatureAppearance.NOT_CERTIFIED);
         //设置图章的显示方式，如下选择的是只显示图章（还有其他的模式，可以图章和签名描述一同显示）
@@ -96,12 +98,13 @@ public class MainWindow {
             Certificate[] chain = ks.getCertificateChain(alias);
             //new一个上边自定义的方法对象，调用签名方法
             MainWindow app = new MainWindow();
-            app.sign(SRC, String.format(DEST, 3), chain, pk, DigestAlgorithms.SHA1, null, MakeSignature.CryptoStandard.CMS, "pdf", "CN");
+            app.sign(SRC, String.format(DEST, 3), chain, pk, DigestAlgorithms.SHA1, null, MakeSignature.CryptoStandard.CMS, "pdf", "CN",1);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             JOptionPane.showMessageDialog(null, e.getMessage());
             e.printStackTrace();
         }
+
     }
 
 
